@@ -44,7 +44,8 @@ const AdminAddProduct = () => {
     }));
   };
 
-  // ...
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error adding products</p>;
 
   return (
     <div className="card">

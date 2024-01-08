@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Product, Cart, ChangeCartItemQuantity } from "../../hooks/api/apiData";
 import useApi from "../../hooks/api/useApi";
-import styles from "./Products.module.css";
 import AuthContext from "../../store/auth/AuthContextProvider";
 import { useContext } from "react";
 

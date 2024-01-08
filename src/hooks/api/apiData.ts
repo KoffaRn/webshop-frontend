@@ -48,3 +48,7 @@ export interface OrderProduct {
   product: Product;
   quantity: number;
 }
+
+export interface MessageResponse {
+  message: string;
+}

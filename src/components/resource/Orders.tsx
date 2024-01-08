@@ -1,7 +1,7 @@
 import { Order } from "../../hooks/api/apiData";
 import useApi from "../../hooks/api/useApi";
 import { useEffect, useState } from "react";
-import Products from "./Products";
+import OrderCard from "./OrderCard";
 
 const Orders = () => {
   const { loading, error, request } = useApi();
@@ -31,31 +31,9 @@ const Orders = () => {
       <h2>Orders</h2>
 
       <div className="grid">
-        {orders.map((order) => {
-          let orderTotal = 0; // Initialize order total for each order
-
-          return (
-            <div key={order.id} className="card">
-              <h3>
-                {order.user.username}, {order.id}
-              </h3>
-              {order.products.map((orderItem) => {
-                const itemTotal = orderItem.product.price * orderItem.quantity;
-                orderTotal += itemTotal;
-
-                return (
-                  <div key={orderItem.id}>
-                    <p>
-                      Name: {orderItem.product.name}, Price:{" "}
-                      {orderItem.product.price}, Quantity: {orderItem.quantity}
-                    </p>
-                  </div>
-                );
-              })}
-              <p>Order total: {orderTotal}</p>
-            </div>
-          );
-        })}
+        {orders.map((order) => (
+          <OrderCard key={order.id} order={order} />
+        ))}
       </div>
     </div>
   );

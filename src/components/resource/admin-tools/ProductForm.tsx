@@ -4,16 +4,16 @@ import useApi from "../../../hooks/api/useApi";
 
 interface ProductFormProps {
   product: Product;
+  updateParent: () => void;
 }
 interface JsonPatch {
   op: string;
   path: string;
   value: string;
 }
-const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ product, updateParent }) => {
   const { loading, error, request } = useApi();
   const [message, setMessage] = useState<String>();
-  const [apiProduct, setApiProduct] = useState<Product>();
   const [formData, setFormData] = useState({
     id: product.id,
     name: product.name,
@@ -30,12 +30,10 @@ const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
       [name]: newValue,
     });
   };
-
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const handleSuccess = (data: Product) => {
       setMessage("Product updated");
-      setApiProduct(data);
     };
     const handleError = (error: string) => {
       console.log("Error changing product: " + error);
@@ -67,7 +65,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
       value: String(formData.current),
     });
     console.log(JSON.stringify(jsonPatch));
-    request(
+    await request(
       `/products/${product.id}`,
       {
         method: "PATCH",
@@ -77,6 +75,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
       handleSuccess,
       handleError
     );
+    updateParent();
   };
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error with product</p>;

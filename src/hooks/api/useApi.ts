@@ -3,14 +3,13 @@ import { useState, useCallback, useContext } from "react";
 
 // Project dependencies
 import AuthContext from "../../store/auth/AuthContextProvider";
-import authCtx from "../../store/auth/AuthContextProvider";
 
 const BASE_URL = "http://localhost:8080";
 
 const useApi = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { authState, globalLogOutDispatch } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
 
   const request = useCallback(
     async (
@@ -58,12 +57,7 @@ const useApi = () => {
       setLoading(false);
     },
 
-    [
-      authState.isLoggedIn,
-      authState.authToken,
-      globalLogOutDispatch,
-      authState.userId,
-    ]
+    [authState.isLoggedIn, authState.authToken, authState.userId]
   );
 
   return {
