@@ -17,6 +17,17 @@ const AdminAddProduct = () => {
   });
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (
+      !formData.description ||
+      !formData.name ||
+      !formData.price ||
+      formData.name.trim() === "" ||
+      formData.description.trim() === "" ||
+      formData.price <= 0
+    ) {
+      setMessage("Incorrect product details");
+      return;
+    }
     const handleSuccess = (data: Product) => {
       setFormData(data);
       setMessage("Product added");

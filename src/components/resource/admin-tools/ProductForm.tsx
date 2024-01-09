@@ -30,8 +30,25 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, updateParent }) => {
       [name]: newValue,
     });
   };
+  const handleDelete = () => {
+    const handleSucces = () => {};
+    request(`/products/${product.id}`, { method: "DELETE" }, handleSucces);
+    updateParent();
+    return;
+  };
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (
+      !formData.description ||
+      !formData.name ||
+      !formData.price ||
+      formData.name.trim() === "" ||
+      formData.description.trim() === "" ||
+      formData.price <= 0
+    ) {
+      setMessage("Incorrect product details");
+      return;
+    }
     const handleSuccess = (data: Product) => {
       setMessage("Product updated");
     };
@@ -88,7 +105,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, updateParent }) => {
           Name:{" "}
           <input
             type="text"
-            placeholder={product.name}
             value={formData.name}
             name="name"
             onChange={handleChange}
@@ -98,7 +114,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, updateParent }) => {
           Description:
           <input
             type="text"
-            placeholder={product.description}
             value={formData.description}
             name="description"
             onChange={handleChange}
@@ -108,7 +123,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, updateParent }) => {
           Price
           <input
             type="number"
-            placeholder={String(product.price)}
             value={formData.price}
             name="price"
             onChange={handleChange}
@@ -135,6 +149,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, updateParent }) => {
         </label>
         <button type="submit">Update product</button>
       </form>
+      <button style={{ backgroundColor: "red" }} onClick={handleDelete}>
+        Delete product
+      </button>
+      <p style={{ fontSize: 9 }}>
+        A product that's in a cart or order cannot be deleted.
+      </p>
     </div>
   );
 };
